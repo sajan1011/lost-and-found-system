@@ -49,273 +49,173 @@ $result = mysqli_stmt_get_result($stmt);
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Browse Items | KBC Lost & Found</title>
-
     <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
 
 <body>
 
-<div class="layout">
+    <div class="layout">
 
-    <!-- Sidebar -->
+        <!-- Sidebar -->
 
-    <aside class="sidebar">
-
-        <a href="dashboard.php" class="brand">
-            KBC Lost & Found
-            <span>Student Panel</span>
-        </a>
-
-        <nav>
-
-            <a href="dashboard.php">
-                Dashboard
+        <aside class="sidebar">
+            <a href="dashboard.php" class="brand">
+                KBC Lost & Found
+                <span>Student Panel</span>
             </a>
 
-            <a href="report-item.php">
-                Report Item
+            <nav>
+
+                <a href="dashboard.php">
+                    Dashboard
+                </a>
+                <a href="report-item.php">
+                    Report Item
+                </a>
+                <a href="browse-items.php" class="active">
+                    Browse Items
+                </a>
+                <a href="my-reports.php">
+                    My Reports
+                </a>
+                <a href="my-claims.php">
+                    My Claims
+                </a>
+            </nav>
+            <a href="../logout.php" class="logout-btn">
+                Logout
             </a>
 
-            <a href="browse-items.php" class="active">
-                Browse Items
-            </a>
-
-            <a href="my-reports.php">
-                My Reports
-            </a>
-
-            <a href="my-claims.php">
-                My Claims
-            </a>
-
-        </nav>
-
-        <a href="../logout.php" class="logout-btn">
-            Logout
-        </a>
-
-    </aside>
+        </aside>
 
 
-    <!-- Main Content -->
+        <!-- Main Content -->
 
-    <main class="main">
-
-        <div class="topbar">
-
-            <h1 class="page-title"
-                style="border:none; margin:0; padding:0;">
-
-                Browse Found Items
-
-            </h1>
-
-            <div class="welcome">
-
-                Find your lost belongings
+        <main class="main">
+            <div class="topbar">
+                <h1 class="page-title" style="border:none; margin:0; padding:0;">
+                    Browse Found Items
+                </h1>
 
             </div>
 
-        </div>
 
+            <div class="browse-tools">
 
-        <!-- Search -->
+    <!-- Search -->
+    <form method="GET" action="browse-items.php" class="small-search">
 
-        <section class="browse-controls">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search items..."
+            value="<?= htmlspecialchars($search) ?>"
+        >
 
-            <form method="GET" action="browse-items.php">
+        <button type="submit">🔍</button>
 
-                <div class="search-box">
+    </form>
 
-                    <input
-                        type="text"
-                        name="search"
-                        placeholder="Search item name, category or color..."
-                        value="<?= htmlspecialchars($search) ?>"
-                    >
 
-                    <button type="submit"
-                            class="btn btn-primary">
+    <!-- Filter -->
+    <form method="GET" action="browse-items.php" class="small-filter">
 
-                        Search
+        <select name="category">
 
-                    </button>
+            <option value="">All Categories</option>
+            <option value="Bag">Bag</option>
+            <option value="Phone">Phone</option>
+            <option value="ID Card">ID Card</option>
+            <option value="Key">Key</option>
+            <option value="Book">Book</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Other">Other</option>
 
-                </div>
+        </select>
 
+        <button type="submit">Filter</button>
 
-                <div class="filter-box">
-
-                    <select name="category">
-
-                        <option value="">
-                            All Categories
-                        </option>
-
-                        <option value="Bag"
-                            <?= $category == "Bag" ? "selected" : "" ?>>
-                            Bag
-                        </option>
-
-                        <option value="Phone"
-                            <?= $category == "Phone" ? "selected" : "" ?>>
-                            Phone
-                        </option>
-
-                        <option value="ID Card"
-                            <?= $category == "ID Card" ? "selected" : "" ?>>
-                            ID Card
-                        </option>
-
-                        <option value="Key"
-                            <?= $category == "Key" ? "selected" : "" ?>>
-                            Key
-                        </option>
-
-                        <option value="Book"
-                            <?= $category == "Book" ? "selected" : "" ?>>
-                            Book
-                        </option>
-
-                        <option value="Clothing"
-                            <?= $category == "Clothing" ? "selected" : "" ?>>
-                            Clothing
-                        </option>
-
-                        <option value="Other"
-                            <?= $category == "Other" ? "selected" : "" ?>>
-                            Other
-                        </option>
-
-                    </select>
-
-                    <button type="submit"
-                            class="btn btn-primary">
-
-                        Filter
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </section>
-
-
-        <!-- Items -->
-
-        <h2 class="page-title">
-            Available Found Items
-        </h2>
-
-
-        <div class="items-grid">
-
-            <?php if (mysqli_num_rows($result) > 0): ?>
-
-                <?php while ($item = mysqli_fetch_assoc($result)): ?>
-
-                    <div class="item-card">
-
-                        <div class="item-image">
-
-                            <?php if (!empty($item['image'])): ?>
-
-                                <img
-                                    src="../<?= htmlspecialchars($item['image']) ?>"
-                                    alt="<?= htmlspecialchars($item['item_name']) ?>"
-                                >
-
-                            <?php else: ?>
-
-                                <div class="no-image">
-                                    No Image
-                                </div>
-
-                            <?php endif; ?>
-
-                        </div>
-
-
-                        <div class="item-details">
-
-                            <span class="item-status found">
-                                Found
-                            </span>
-
-                            <h3>
-                                <?= htmlspecialchars($item['item_name']) ?>
-                            </h3>
-
-                            <p>
-                                <strong>Category:</strong>
-                                <?= htmlspecialchars($item['category']) ?>
-                            </p>
-
-                            <p>
-                                <strong>Color:</strong>
-                                <?= htmlspecialchars($item['color']) ?>
-                            </p>
-
-                            <?php if (!empty($item['location'])): ?>
-
-                                <p>
-                                    <strong>Location:</strong>
-                                    <?= htmlspecialchars($item['location']) ?>
-                                </p>
-
-                            <?php endif; ?>
-
-
-                            <?php if (!empty($item['date_found'])): ?>
-
-                                <p>
-                                    <strong>Date Found:</strong>
-                                    <?= htmlspecialchars($item['date_found']) ?>
-                                </p>
-
-                            <?php endif; ?>
-
-
-                            <a
-                                href="item-details.php?id=<?= $item['id'] ?>"
-                                class="btn btn-primary"
-                            >
-                                View Details
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                <?php endwhile; ?>
-
-            <?php else: ?>
-
-                <div class="no-items">
-
-                    <h3>
-                        No found items available
-                    </h3>
-
-                    <p>
-                        Try a different search or category.
-                    </p>
-
-                </div>
-
-            <?php endif; ?>
-
-        </div>
-
-    </main>
+    </form>
 
 </div>
 
+            <!-- Items -->
+
+            <h2 class="page-title">
+                Available Found Items
+            </h2>
+
+            <div class="items-grid">
+                <?php if (mysqli_num_rows($result) > 0): ?>
+                    <?php while ($item = mysqli_fetch_assoc($result)): ?>
+                        <div class="item-card">
+                            <div class="item-image">
+                                <?php if (!empty($item['image'])): ?>
+                                    <img src="../<?= htmlspecialchars($item['image']) ?>"
+                                        alt="<?= htmlspecialchars($item['item_name']) ?>">
+                                <?php else: ?>
+                                    <div class="no-image">
+                                        No Image
+                                    </div>
+
+                                <?php endif; ?>
+
+                            </div>
+
+                            <div class="item-details">
+                                <span class="item-status found">
+                                    Found
+                                </span>
+                                <h3>
+                                    <?= htmlspecialchars($item['item_name']) ?>
+                                </h3>
+                                <p>
+                                    <strong>Category:</strong>
+                                    <?= htmlspecialchars($item['category']) ?>
+                                </p>
+
+                                <p>
+                                    <strong>Color:</strong>
+                                    <?= htmlspecialchars($item['color']) ?>
+                                </p>
+
+                                <?php if (!empty($item['location'])): ?>
+
+                                    <p>
+                                        <strong>Location:</strong>
+                                        <?= htmlspecialchars($item['location']) ?>
+                                    </p>
+
+                                <?php endif; ?>
+                                <?php if (!empty($item['date_found'])): ?>
+                                    <p>
+                                        <strong>Date Found:</strong>
+                                        <?= htmlspecialchars($item['date_found']) ?>
+                                    </p>
+
+                                <?php endif; ?>
+                                <a href="item-details.php?id=<?= $item['id'] ?>" class="btn btn-primary">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div class="no-items">
+                        <h3>
+                            No found items available
+                        </h3>
+                        <p>
+                            Try a different search or category.
+                        </p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </main>
+    </div>
 </body>
 
 </html>
