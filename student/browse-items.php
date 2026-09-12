@@ -1,11 +1,59 @@
+<?php
+
+require "../includes/session-check.php";
+require "../includes/db.php";
+
+$search = trim($_GET['search'] ?? '');
+$category = trim($_GET['category'] ?? '');
+
+$sql = "SELECT * FROM items WHERE type = 'found'";
+
+$params = [];
+$types = "";
+
+if ($search !== "") {
+    $sql .= " AND (item_name LIKE ? OR category LIKE ? OR color LIKE ?)";
+    $search_value = "%$search%";
+
+    $params[] = $search_value;
+    $params[] = $search_value;
+    $params[] = $search_value;
+
+    $types .= "sss";
+}
+
+if ($category !== "") {
+    $sql .= " AND category = ?";
+    $params[] = $category;
+    $types .= "s";
+}
+
+$sql .= " ORDER BY id DESC";
+
+$stmt = mysqli_prepare($conn, $sql);
+
+if (!empty($params)) {
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
+}
+
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Browse Items | KBC Lost & Found</title>
 
     <link rel="stylesheet" href="../assets/css/style.css">
+
 </head>
 
 <body>
@@ -13,6 +61,7 @@
 <div class="layout">
 
     <!-- Sidebar -->
+
     <aside class="sidebar">
 
         <a href="dashboard.php" class="brand">
@@ -21,195 +70,245 @@
         </a>
 
         <nav>
-            <a href="dashboard.php">Dashboard</a>
-            <a href="report-item.php">Report Item</a>
-            <a href="browse-items.php" class="active">Browse Items</a>
-            <a href="my-reports.php">My Reports</a>
-            <a href="my-claims.php">My Claims</a>
+
+            <a href="dashboard.php">
+                Dashboard
+            </a>
+
+            <a href="report-item.php">
+                Report Item
+            </a>
+
+            <a href="browse-items.php" class="active">
+                Browse Items
+            </a>
+
+            <a href="my-reports.php">
+                My Reports
+            </a>
+
+            <a href="my-claims.php">
+                My Claims
+            </a>
+
         </nav>
 
-        <a href="../logout.php" class="logout-btn">Logout</a>
+        <a href="../logout.php" class="logout-btn">
+            Logout
+        </a>
 
     </aside>
 
 
     <!-- Main Content -->
+
     <main class="main">
 
         <div class="topbar">
+
             <h1 class="page-title"
                 style="border:none; margin:0; padding:0;">
-                Browse Items
+
+                Browse Found Items
+
             </h1>
 
             <div class="welcome">
-                Lost something? Find it here.
+
+                Find your lost belongings
+
             </div>
+
         </div>
 
 
-        <!-- Search and Filter -->
+        <!-- Search -->
+
         <section class="browse-controls">
 
-            <div class="search-box">
-                <input
-                    type="text"
-                    placeholder="Search items..."
-                >
+            <form method="GET" action="browse-items.php">
 
-                <button class="btn btn-primary">
-                    Search
-                </button>
-            </div>
+                <div class="search-box">
 
-            <div class="filter-box">
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Search item name, category or color..."
+                        value="<?= htmlspecialchars($search) ?>"
+                    >
 
-                <select>
-                    <option value="">All Categories</option>
-                    <option>Electronics</option>
-                    <option>Documents</option>
-                    <option>Books</option>
-                    <option>Accessories</option>
-                    <option>Others</option>
-                </select>
+                    <button type="submit"
+                            class="btn btn-primary">
 
-                <select>
-                    <option value="">All Items</option>
-                    <option>Lost Items</option>
-                    <option>Found Items</option>
-                </select>
+                        Search
 
-            </div>
+                    </button>
+
+                </div>
+
+
+                <div class="filter-box">
+
+                    <select name="category">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="Bag"
+                            <?= $category == "Bag" ? "selected" : "" ?>>
+                            Bag
+                        </option>
+
+                        <option value="Phone"
+                            <?= $category == "Phone" ? "selected" : "" ?>>
+                            Phone
+                        </option>
+
+                        <option value="ID Card"
+                            <?= $category == "ID Card" ? "selected" : "" ?>>
+                            ID Card
+                        </option>
+
+                        <option value="Key"
+                            <?= $category == "Key" ? "selected" : "" ?>>
+                            Key
+                        </option>
+
+                        <option value="Book"
+                            <?= $category == "Book" ? "selected" : "" ?>>
+                            Book
+                        </option>
+
+                        <option value="Clothing"
+                            <?= $category == "Clothing" ? "selected" : "" ?>>
+                            Clothing
+                        </option>
+
+                        <option value="Other"
+                            <?= $category == "Other" ? "selected" : "" ?>>
+                            Other
+                        </option>
+
+                    </select>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Filter
+
+                    </button>
+
+                </div>
+
+            </form>
 
         </section>
 
 
         <!-- Items -->
-        <h2 class="page-title">Available Items</h2>
+
+        <h2 class="page-title">
+            Available Found Items
+        </h2>
+
 
         <div class="items-grid">
 
-            <!-- Item 1 -->
-            <div class="item-card">
+            <?php if (mysqli_num_rows($result) > 0): ?>
 
-                <div class="item-image">
-                    <img src="../assets/images/sample-item.jpg"
-                         alt="Black Wallet">
-                </div>
+                <?php while ($item = mysqli_fetch_assoc($result)): ?>
 
-                <div class="item-details">
+                    <div class="item-card">
 
-                    <span class="item-status found">
-                        Found
-                    </span>
+                        <div class="item-image">
 
-                    <h3>Black Wallet</h3>
+                            <?php if (!empty($item['image'])): ?>
 
-                    <p>
-                        <strong>Category:</strong>
-                        Accessories
-                    </p>
+                                <img
+                                    src="../<?= htmlspecialchars($item['image']) ?>"
+                                    alt="<?= htmlspecialchars($item['item_name']) ?>"
+                                >
 
-                    <p>
-                        <strong>Color:</strong>
-                        Black
-                    </p>
+                            <?php else: ?>
 
-                    <p>
-                        <strong>Date:</strong>
-                        2026-09-05
-                    </p>
+                                <div class="no-image">
+                                    No Image
+                                </div>
 
-                    <a href="item-details.php"
-                       class="btn btn-primary">
-                        View Details
-                    </a>
+                            <?php endif; ?>
 
-                </div>
-
-            </div>
+                        </div>
 
 
-            <!-- Item 2 -->
-            <div class="item-card">
+                        <div class="item-details">
 
-                <div class="item-image">
-                    <img src="../assets/images/sample-item.jpg"
-                         alt="Calculator">
-                </div>
+                            <span class="item-status found">
+                                Found
+                            </span>
 
-                <div class="item-details">
+                            <h3>
+                                <?= htmlspecialchars($item['item_name']) ?>
+                            </h3>
 
-                    <span class="item-status found">
-                        Found
-                    </span>
+                            <p>
+                                <strong>Category:</strong>
+                                <?= htmlspecialchars($item['category']) ?>
+                            </p>
 
-                    <h3>Scientific Calculator</h3>
+                            <p>
+                                <strong>Color:</strong>
+                                <?= htmlspecialchars($item['color']) ?>
+                            </p>
 
-                    <p>
-                        <strong>Category:</strong>
-                        Electronics
-                    </p>
+                            <?php if (!empty($item['location'])): ?>
 
-                    <p>
-                        <strong>Color:</strong>
-                        Black
-                    </p>
+                                <p>
+                                    <strong>Location:</strong>
+                                    <?= htmlspecialchars($item['location']) ?>
+                                </p>
 
-                    <p>
-                        <strong>Date:</strong>
-                        2026-09-03
-                    </p>
-
-                    <a href="item-details.php"
-                       class="btn btn-primary">
-                        View Details
-                    </a>
-
-                </div>
-
-            </div>
+                            <?php endif; ?>
 
 
-            <!-- Item 3 -->
-            <div class="item-card">
+                            <?php if (!empty($item['date_found'])): ?>
 
-                <div class="item-image">
-                    <img src="../assets/images/sample-item.jpg"
-                         alt="Student ID Card">
-                </div>
+                                <p>
+                                    <strong>Date Found:</strong>
+                                    <?= htmlspecialchars($item['date_found']) ?>
+                                </p>
 
-                <div class="item-details">
+                            <?php endif; ?>
 
-                    <span class="item-status found">
-                        Found
-                    </span>
 
-                    <h3>Student ID Card</h3>
+                            <a
+                                href="item-details.php?id=<?= $item['id'] ?>"
+                                class="btn btn-primary"
+                            >
+                                View Details
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                <?php endwhile; ?>
+
+            <?php else: ?>
+
+                <div class="no-items">
+
+                    <h3>
+                        No found items available
+                    </h3>
 
                     <p>
-                        <strong>Category:</strong>
-                        Documents
+                        Try a different search or category.
                     </p>
-
-                    <p>
-                        <strong>Color:</strong>
-                        White
-                    </p>
-
-                    <p>
-                        <strong>Date:</strong>
-                        2026-09-01
-                    </p>
-
-                    <a href="item-details.php"
-                       class="btn btn-primary">
-                        View Details
-                    </a>
 
                 </div>
 
-            </div>
+            <?php endif; ?>
 
         </div>
 
@@ -218,4 +317,12 @@
 </div>
 
 </body>
+
 </html>
+
+<?php
+
+mysqli_stmt_close($stmt);
+mysqli_close($conn);
+
+?>
