@@ -1,5 +1,5 @@
 <?php
-
+$current_page = 'browse';
 require "../includes/session-check.php";
 require "../includes/db.php";
 
@@ -58,37 +58,7 @@ $result = mysqli_stmt_get_result($stmt);
 
     <div class="layout">
 
-        <!-- Sidebar -->
-
-        <aside class="sidebar">
-            <a href="dashboard.php" class="brand">
-                KBC Lost & Found
-                <span>Student Panel</span>
-            </a>
-
-            <nav>
-
-                <a href="dashboard.php">
-                    Dashboard
-                </a>
-                <a href="report-item.php">
-                    Report Item
-                </a>
-                <a href="browse-items.php" class="active">
-                    Browse Items
-                </a>
-                <a href="my-reports.php">
-                    My Reports
-                </a>
-                <a href="my-claims.php">
-                    My Claims
-                </a>
-            </nav>
-            <a href="../logout.php" class="logout-btn">
-                Logout
-            </a>
-
-        </aside>
+        <?php include "sidebar.php"; ?>
 
 
         <!-- Main Content -->
@@ -104,42 +74,38 @@ $result = mysqli_stmt_get_result($stmt);
 
             <div class="browse-tools">
 
-    <!-- Search -->
-    <form method="GET" action="browse-items.php" class="small-search">
+                <!-- Search -->
+                <form method="GET" action="browse-items.php" class="small-search">
 
-        <input
-            type="text"
-            name="search"
-            placeholder="Search items..."
-            value="<?= htmlspecialchars($search) ?>"
-        >
+                    <input type="text" name="search" placeholder="Search items..."
+                        value="<?= htmlspecialchars($search) ?>">
 
-        <button type="submit">🔍</button>
+                    <button type="submit">🔍</button>
 
-    </form>
+                </form>
 
 
-    <!-- Filter -->
-    <form method="GET" action="browse-items.php" class="small-filter">
+                <!-- Filter -->
+                <form method="GET" action="browse-items.php" class="small-filter">
 
-        <select name="category">
+                    <select name="category">
 
-            <option value="">All Categories</option>
-            <option value="Bag">Bag</option>
-            <option value="Phone">Phone</option>
-            <option value="ID Card">ID Card</option>
-            <option value="Key">Key</option>
-            <option value="Book">Book</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Other">Other</option>
+                        <option value="">All Categories</option>
+                        <option value="Bag">Bag</option>
+                        <option value="Phone">Phone</option>
+                        <option value="ID Card">ID Card</option>
+                        <option value="Key">Key</option>
+                        <option value="Book">Book</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Other">Other</option>
 
-        </select>
+                    </select>
 
-        <button type="submit">Filter</button>
+                    <button type="submit">Filter</button>
 
-    </form>
+                </form>
 
-</div>
+            </div>
 
             <!-- Items -->
 

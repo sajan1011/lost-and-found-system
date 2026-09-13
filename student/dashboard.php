@@ -1,4 +1,5 @@
 <?php
+$current_page = 'dashboard';
 require "../includes/session-check.php";
 require "../includes/db.php";
 
@@ -23,20 +24,7 @@ $found_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
 
     <div class="layout">
 
-        <aside class="sidebar">
-            <a href="dashboard.php" class="brand">
-                KBC Lost & Found
-                <span>Student Panel</span>
-            </a>
-            <nav>
-                <a href="dashboard.php" class="active">Dashboard</a>
-                <a href="report-item.php">Report Item</a>
-                <a href="browse-items.php">Browse Items</a>
-                <a href="my-reports.php">My Reports</a>
-                <a href="my-claims.php">My Claims</a>
-            </nav>
-            <a href="../logout.php" class="logout-btn">Logout</a>
-        </aside>
+        <?php include "sidebar.php"; ?>
 
         <div class="main">
 
