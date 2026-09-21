@@ -7,28 +7,12 @@ $current_page = "reports";
 
 $user_id = $_SESSION['user_id'];
 
-$search = trim($_GET['search'] ?? '');
-$type = trim($_GET['type'] ?? '');
-$status = trim($_GET['status'] ?? '');
-
-
-
-
-$sql = "SELECT * FROM items WHERE user_id = ?";
-
-$params = [$user_id];
-$types = "i";
-
-// -------------------------
 // Summary counts
-// -------------------------
-
 $count_sql = "
     SELECT
         COUNT(*) AS total,
         SUM(type = 'lost') AS lost,
-        SUM(type = 'found') AS found,
-        SUM(status = 'active') AS active
+        SUM(type = 'found') AS found
     FROM items
     WHERE user_id = ?
 ";
@@ -80,8 +64,8 @@ $counts = mysqli_fetch_assoc($count_result);
 
             <div class="report-summary">
                 <div class="report-stat">
-                    <div class="stat-icon lost-icon">
-                        L</div>
+                    <div class="stat-icon lost-icon"> L
+                    </div>
                     <div>
                         <h3>
                             <?= $counts['lost'] ?? 0 ?>
@@ -121,7 +105,7 @@ $counts = mysqli_fetch_assoc($count_result);
                 <div>
                     <h2>Your Reports</h2>
                     <span>
-                        <?= mysqli_num_rows($result) ?> reports found
+                        <?= $counts['total'] ?? 0 ?> reports found
                     </span>
                 </div>
             </div>
@@ -131,7 +115,7 @@ $counts = mysqli_fetch_assoc($count_result);
             <div class="reports-list">
 
                 <?php
-                if (mysqli_num_rows($result) > 0):
+                if ($counts['total'] > 0):
 
                     while ($item = mysqli_fetch_assoc($result)):
 
