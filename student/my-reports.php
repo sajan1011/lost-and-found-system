@@ -14,21 +14,12 @@ $count_sql = "
         SUM(type = 'lost') AS lost,
         SUM(type = 'found') AS found
     FROM items
-    WHERE user_id = ?
-";
+    WHERE user_id = ?";
 
 $count_stmt = mysqli_prepare($conn, $count_sql);
-
-mysqli_stmt_bind_param(
-    $count_stmt,
-    "i",
-    $user_id
-);
-
+mysqli_stmt_bind_param($count_stmt,"i",$user_id);
 mysqli_stmt_execute($count_stmt);
-
 $count_result = mysqli_stmt_get_result($count_stmt);
-
 $counts = mysqli_fetch_assoc($count_result);
 
 ?>
@@ -116,14 +107,11 @@ $counts = mysqli_fetch_assoc($count_result);
 
                 <?php
                 if ($counts['total'] > 0):
-
-                    while ($item = mysqli_fetch_assoc($result)):
-
-                        ?>
+while ($item = mysqli_fetch_assoc($result)):
+  ?>
                         <div class="report-card">
 
-
-                            <!-- Image -->
+ <!-- Image -->
 
                             <div class="report-image">
                                 <?php if (!empty($item['image'])): ?>
@@ -136,8 +124,7 @@ $counts = mysqli_fetch_assoc($count_result);
                                 <?php endif; ?>
                             </div>
 
-
-                            <!-- Information -->
+ <!-- Information -->
 
                             <div class="report-info">
                                 <div class="report-title-row">
@@ -168,23 +155,18 @@ $counts = mysqli_fetch_assoc($count_result);
                                         ) ?>
 
                                     </span>
-
-
-                                </div>
+ </div>
 
                                 <!-- Details -->
 
                                 <div class="report-details">
-
-                                    <span>
+  <span>
                                         📁
                                         <?= htmlspecialchars(
                                             $item['category']
                                         ) ?>
                                     </span>
-
-
-                                    <?php if (!empty($item['location'])): ?>
+<?php if (!empty($item['location'])): ?>
 
                                         <span>
                                             📍
@@ -192,17 +174,11 @@ $counts = mysqli_fetch_assoc($count_result);
                                                 $item['location']
                                             ) ?>
                                         </span>
-
-                                    <?php endif; ?>
-
-
-                                    <span>
-
-                                        📅
-
-                                        <?php
-
-                                        if (
+<?php endif; ?>
+<span>
+  📅
+<?php
+if (
                                             $item['type'] == 'lost'
                                             && !empty($item['date_lost'])
                                         ) {
@@ -215,75 +191,42 @@ $counts = mysqli_fetch_assoc($count_result);
                                             $item['type'] == 'found'
                                             && !empty($item['date_found'])
                                         ) {
-
-                                            echo htmlspecialchars(
+ echo htmlspecialchars(
                                                 $item['date_found']
                                             );
-
-                                        }
-
-                                        ?>
+ }
+?>
 
                                     </span>
+</div>
 
-                                </div>
-
-
-
-                                <!-- Description -->
+ <!-- Description -->
 
                                 <p class="report-description">
+  <?= htmlspecialchars($item['description']) ?>
+</p>
 
-                                    <?= htmlspecialchars(
-                                        $item['description']
-                                    ) ?>
-
-                                </p>
-
-
-
-                                <!-- Actions -->
-
-                                <div class="report-actions">
-
-
-                                    <a href="item-details.php?id=<?= $item['id'] ?>" class="view-btn">
-                                        View Details
-                                    </a>
-
-
-                                    <a href="edit-item.php?id=<?= $item['id'] ?>" class="edit-btn">
+<!-- Actions -->
+<div class="report-actions">
+ <a href="item-details.php?id=<?= $item['id'] ?>" class="view-btn">
+     View Details
+    </a>
+ <a href="edit-item.php?id=<?= $item['id'] ?>" class="edit-btn">
                                         Edit
                                     </a>
-
-
-                                    <a href="delete-item.php?id=<?= $item['id'] ?>" class="delete-btn" onclick="return confirm(
-                                        'Are you sure you want to delete this report?'
-                                    );">
+<a href="delete-item.php?id=<?= $item['id'] ?>" class="delete-btn" onclick="return confirm(
+                                        'Are you sure you want to delete this report?');">
                                         Delete
                                     </a>
+ </div>
+ </div>
+ </div>
+<?php endwhile; ?>
 
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                    <?php endwhile; ?>
-
-
-                <?php else: ?>
-
-
-                    <div class="no-items">
-
-                        <h3>No reports found</h3>
-
-                        <p>
+<?php else: ?>
+<div class="no-items">
+<h3>No reports found</h3>
+ <p>
                             You have not reported any items matching your search.
                         </p>
 
@@ -291,26 +234,8 @@ $counts = mysqli_fetch_assoc($count_result);
 
 
                 <?php endif; ?>
-
-
-            </div>
-
-
-        </main>
-
-    </div>
-
-
+</div>
+</main>
+</div>
 </body>
-
 </html>
-
-
-<?php
-
-mysqli_stmt_close($stmt);
-mysqli_stmt_close($count_stmt);
-
-mysqli_close($conn);
-
-?>
