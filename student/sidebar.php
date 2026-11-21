@@ -7,13 +7,13 @@
         <a href="dashboard.php" class="<?= $current_page == 'dashboard' ? 'active' : '' ?>">
             Dashboard
         </a>
-        <a href="report-item.php" class="<?= $current_page == 'report' ? 'active' : '' ?>">
+        <a href="report-item.php" class="<?= $current_page == 'report-item' ? 'active' : '' ?>">
             Report Item
         </a>
         <a href="browse-items.php" class="<?= $current_page == 'browse' ? 'active' : '' ?>">
             Browse Items
         </a>
-        <a href="my-reports.php" class="<?= $current_page == 'reports' ? 'active' : '' ?>">
+        <a href="my-reports.php" class="<?= $current_page == 'my-reports' ? 'active' : '' ?>">
             My Reports
         </a>
         <a href="my-claims.php" class="<?= $current_page == 'claims' ? 'active' : '' ?>">

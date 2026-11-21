@@ -1,5 +1,5 @@
 <?php
-$current_page = 'report';
+$current_page = 'report-item';
 require "../includes/session-check.php";
 ?>
 <!DOCTYPE html>
