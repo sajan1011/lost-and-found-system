@@ -29,3 +29,73 @@ if (!$item) {
 }
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Report | KBC Lost & Found</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+
+    <?php include "sidebar.php"; ?>
+
+    <div class="main-content">
+        <div class="edit-report-container">
+            <h2>Edit Report</h2>
+            <form class="edit-report-form" action="edit-handle.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<?= htmlspecialchars($item['id']) ?>">
+
+                <label>Item Name</label>
+                <input type="text" name="item_name" value="<?= htmlspecialchars($item['item_name']) ?>" required>
+
+                <label>Report Type</label>
+                <select name="type" required>
+                    <option value="lost" <?= $item['type'] == 'lost' ? 'selected' : '' ?>>Lost</option>
+                    <option value="found" <?= $item['type'] == 'found' ? 'selected' : '' ?>>Found</option>
+                </select>
+
+                <label>Category</label>
+                <input type="text" name="category" value="<?= htmlspecialchars($item['category']) ?>" required>
+
+                <label>Location</label>
+                <input type="text" name="location" value="<?= htmlspecialchars($item['location']) ?>" required>
+
+                <label>Date Reported</label>
+                <input type="date" name="date_reported" value="<?= htmlspecialchars($item['date_reported']) ?>"
+                    required>
+
+                <label>Description</label>
+                <textarea name="description" required><?= htmlspecialchars($item['description']) ?></textarea>
+
+                <label>Current Image</label>
+
+                <?php
+                if (!empty($item['image'])) {
+                    ?>
+                    <img class="edit-current-image" src="../<?= htmlspecialchars($item['image']) ?>"
+                        alt="<?= htmlspecialchars($item['item_name']) ?>">
+                    <?php
+                } else {
+                    ?>
+                    <p>No image uploaded.</p>
+                    <?php
+                }
+                ?>
+
+                <label>Upload New Image (Optional)</label>
+                <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
+
+                <div class="edit-report-actions">
+                    <button type="submit" name="update_item">Update Report</button>
+                    <a href="my-reports.php">Cancel</a>
+                </div>
+            </form>
+        </div>
+</body>
+
+</html>
