@@ -115,18 +115,8 @@ if (!$stmt) {
     exit();
 }
 
-mysqli_stmt_bind_param(
-    $stmt,
-    "isssssss",
-    $user_id,
-    $type,
-    $title,
-    $description,
-    $category,
-    $location,
-    $date_reported,
-    $image_path
-);
+mysqli_stmt_bind_param($stmt,"isssssss",$user_id,$type,$title,$description,$category,$location,
+    $date_reported, $image_path);
 
 if (mysqli_stmt_execute($stmt)) {
 
