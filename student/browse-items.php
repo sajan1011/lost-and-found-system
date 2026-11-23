@@ -6,13 +6,19 @@ require "../includes/db.php";
 $search = trim($_GET['search'] ?? '');
 $category = trim($_GET['category'] ?? '');
 
-$sql = "SELECT * FROM items WHERE type = 'found'";
+$user_id = $_SESSION['user_id'];
 
-$params = [];
-$types = "";
+$sql = "SELECT * FROM items
+        WHERE type = 'found'
+        AND status = 'active'
+        AND user_id != ?";
+
+$params = [$user_id];
+$types = "i";
 
 if ($search !== "") {
     $sql .= " AND (item_name LIKE ? OR category LIKE ? OR color LIKE ?)";
+
     $search_value = "%$search%";
 
     $params[] = $search_value;
@@ -24,6 +30,7 @@ if ($search !== "") {
 
 if ($category !== "") {
     $sql .= " AND category = ?";
+
     $params[] = $category;
     $types .= "s";
 }
@@ -32,9 +39,7 @@ $sql .= " ORDER BY id DESC";
 
 $stmt = mysqli_prepare($conn, $sql);
 
-if (!empty($params)) {
-    mysqli_stmt_bind_param($stmt, $types, ...$params);
-}
+mysqli_stmt_bind_param($stmt, $types, ...$params);
 
 mysqli_stmt_execute($stmt);
 
@@ -75,7 +80,7 @@ $result = mysqli_stmt_get_result($stmt);
             <div class="browse-tools">
 
                 <!-- Search -->
-                <form method="GET" action="browse-items.php" class="small-search">
+                <form method="GET" action="browse-item.php" class="small-search">
 
                     <input type="text" name="search" placeholder="Search items..."
                         value="<?= htmlspecialchars($search) ?>">
@@ -162,9 +167,17 @@ $result = mysqli_stmt_get_result($stmt);
                                     </p>
 
                                 <?php endif; ?>
-                                <a href="item-details.php?id=<?= $item['id'] ?>" class="btn btn-primary">
-                                    View Details
-                                </a>
+                                <div class="item-actions">
+
+                                    <a href="item-details.php?id=<?= $item['id'] ?>" class="btn btn-primary">
+                                        View Details
+                                    </a>
+
+                                    <a href="claim-item.php?id=<?= $item['id'] ?>" class="btn btn-claim">
+                                        Claim Item
+                                    </a>
+
+                                </div>
                             </div>
                         </div>
 

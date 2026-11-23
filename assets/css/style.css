@@ -1091,3 +1091,29 @@ tbody tr:hover {
         text-align: center;
     }
 }
+/* Browse Item Actions */
+
+.item-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.item-actions a {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-claim {
+    background: #16a34a;
+    color: #ffffff;
+}
+
+.btn-claim:hover {
+    background: #15803d;
+}
