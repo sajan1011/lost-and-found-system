@@ -20,13 +20,9 @@ $sql = "SELECT * FROM items
         AND status = 'active' AND user_id != ?";
 
 $stmt = mysqli_prepare($conn, $sql);
-
 mysqli_stmt_bind_param($stmt, "ii", $item_id, $user_id);
-
 mysqli_stmt_execute($stmt);
-
 $result = mysqli_stmt_get_result($stmt);
-
 $item = mysqli_fetch_assoc($result);
 
 // Check whether item exists
@@ -35,12 +31,10 @@ if (!$item) {
     header("Location: dashboard.php");
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,17 +43,11 @@ if (!$item) {
 </head>
 
 <body>
-
     <?php include "sidebar.php"; ?>
-
     <div class="main-content">
-
         <h2>Claim Found Item</h2>
-
         <div class="claim-item-container">
-
             <h3><?= htmlspecialchars($item['item_name']) ?></h3>
-
             <p>
                 <strong>Category:</strong>
                 <?= htmlspecialchars($item['category']) ?>
@@ -76,28 +64,18 @@ if (!$item) {
             </p>
 
             <form action="claim-handle.php" method="POST">
-
                 <input type="hidden" name="item_id"
                     value="<?= htmlspecialchars($item['id']) ?>">
-
                 <label>Explain why this item belongs to you</label>
-
                 <textarea name="message"
                     placeholder="Describe unique features or details that can prove ownership..."
                     required></textarea>
-
                 <button type="submit" name="submit_claim">
                     Submit Claim
                 </button>
-
                 <a href="dashboard.php">Cancel</a>
-
             </form>
-
         </div>
-
     </div>
-
 </body>
-
 </html>

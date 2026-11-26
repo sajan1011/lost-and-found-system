@@ -1,4 +1,3 @@
-
 <?php
 
 require "../includes/session-check.php";
@@ -46,11 +45,8 @@ $result = mysqli_stmt_get_result($stmt);
 </head>
 
 <body>
-
     <div class="layout">
-
         <?php include "sidebar.php"; ?>
-
         <main class="main">
 
             <!-- Page Header -->
@@ -59,15 +55,11 @@ $result = mysqli_stmt_get_result($stmt);
                     <h1>My Reports</h1>
                     <p>Manage the items you have reported.</p>
                 </div>
-
-                <a href="report-item.php" class="report-new-btn">
-                    + Report Item
-                </a>
+                <a href="report-item.php" class="report-new-btn"> + Report Item</a>
             </div>
 
             <!-- Summary Cards -->
             <div class="report-summary">
-
                 <div class="report-stat">
                     <div class="stat-icon lost-icon">L</div>
                     <div>
@@ -104,61 +96,45 @@ $result = mysqli_stmt_get_result($stmt);
 
             <!-- Reports List -->
             <div class="reports-list">
-
-                <?php if (mysqli_num_rows($result) > 0): ?>
-
-                    <?php while ($item = mysqli_fetch_assoc($result)): ?>
-
+                <?php if (mysqli_num_rows($result) > 0) { ?>
+                    <?php while ($item = mysqli_fetch_assoc($result)) { ?>
                         <div class="report-card">
 
                             <!-- Item Image -->
                             <div class="report-image">
-
-                                <?php if (!empty($item['image'])): ?>
-
-                                    <img
-                                        src="../<?= htmlspecialchars($item['image']) ?>"
+                                <?php if (!empty($item['image'])) { ?>
+                                    <img src="../<?= htmlspecialchars($item['image']) ?>"
                                         alt="<?= htmlspecialchars($item['item_name']) ?>">
 
-                                <?php else: ?>
-
+                                <?php } else { ?>
                                     <div class="placeholder-image">📦</div>
-
-                                <?php endif; ?>
-
+                                <?php } ?>
                             </div>
 
                             <!-- Item Information -->
                             <div class="report-info">
-
                                 <div class="report-title-row">
-
                                     <div>
-
                                         <span class="report-type <?= $item['type'] == 'lost' ? 'lost' : 'found' ?>">
                                             <?= strtoupper(htmlspecialchars($item['type'])) ?>
                                         </span>
-
                                         <h3>
                                             <?= htmlspecialchars($item['item_name']) ?>
                                         </h3>
-
                                     </div>
-
                                 </div>
 
                                 <!-- Item Details -->
                                 <div class="report-details">
-
                                     <span>
                                         📁 <?= htmlspecialchars($item['category']) ?>
                                     </span>
-
-                                    <?php if (!empty($item['location'])): ?>
+                                    <?php 
+                                    if (!empty($item['location'])) { ?>
                                         <span>
                                             📍 <?= htmlspecialchars($item['location']) ?>
                                         </span>
-                                    <?php endif; ?>
+                                    <?php } ?>
 
                                     <span>
                                         📅
@@ -181,31 +157,23 @@ $result = mysqli_stmt_get_result($stmt);
                                 <!-- Actions -->
                                 <div class="report-actions">
 
-                                    <a href="item-details.php?id=<?= (int)$item['id'] ?>" class="view-btn">
+                                    <a href="item-details.php?id=<?= (int) $item['id'] ?>" class="view-btn">
                                         View Details
                                     </a>
 
-                                    <a href="edit-item.php?id=<?= (int)$item['id'] ?>" class="edit-btn">
+                                    <a href="edit-item.php?id=<?= (int) $item['id'] ?>" class="edit-btn">
                                         Edit
                                     </a>
 
-                                    <a
-                                        href="delete-item.php?id=<?= (int)$item['id'] ?>"
-                                        class="delete-btn"
+                                    <a href="delete-item.php?id=<?= (int) $item['id'] ?>" class="delete-btn"
                                         onclick="return confirm('Are you sure you want to delete this report?');">
                                         Delete
                                     </a>
-
                                 </div>
-
                             </div>
-
                         </div>
-
-                    <?php endwhile; ?>
-
-                <?php else: ?>
-
+                    <?php } ?>
+                <?php } else { ?>
                     <div class="no-items">
                         <h3>No reports found</h3>
                         <p>You have not reported any items yet.</p>
@@ -213,14 +181,10 @@ $result = mysqli_stmt_get_result($stmt);
                             + Report Your First Item
                         </a>
                     </div>
-
-                <?php endif; ?>
-
+                <?php } ?>
             </div>
-
         </main>
-
     </div>
-
 </body>
+
 </html>

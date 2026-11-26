@@ -1091,22 +1091,237 @@ tbody tr:hover {
         text-align: center;
     }
 }
-/* Browse Item Actions */
+
+
+/* ==========================================
+   BROWSE ITEMS PAGE
+========================================== */
+
+/* Main Layout */
+
+.layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    align-items: stretch;
+}
+
+.sidebar {
+    flex: 0 0 250px;
+    width: 250px;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+    padding: 30px;
+    overflow-x: hidden;
+    background: #f5f7fb;
+}
+
+/* Page Header */
+
+.main .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.main .page-title {
+    color: #1f2937;
+    font-size: 25px;
+    font-weight: 700;
+    margin: 0 0 22px;
+}
+
+/* Search and Filter */
+
+.browse-tools {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px;
+    margin-bottom: 28px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.small-search {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    min-width: 0;
+}
+
+.small-search input {
+    flex: 1;
+    min-width: 0;
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.small-search input:focus,
+.small-filter select:focus {
+    border-color: #2563eb;
+}
+
+.small-search button,
+.small-filter button {
+    height: 42px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 7px;
+    background: #2563eb;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.small-search button:hover,
+.small-filter button:hover {
+    background: #1d4ed8;
+}
+
+.small-filter {
+    display: flex;
+    gap: 10px;
+}
+
+.small-filter select {
+    min-width: 160px;
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    background: #ffffff;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Items Grid */
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+/* Item Card */
+
+.item-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Item Image */
+
+.item-image {
+    width: 100%;
+    height: 190px;
+    background: #eef1f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+/* Item Details */
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 18px;
+}
+
+.item-status.found {
+    align-self: flex-start;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.item-details h3 {
+    margin: 12px 0;
+    color: #1f2937;
+    font-size: 19px;
+    overflow-wrap: anywhere;
+}
+
+.item-details p {
+    margin: 6px 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.item-details p strong {
+    color: #374151;
+}
+
+/* Item Buttons */
 
 .item-actions {
     display: flex;
     gap: 10px;
-    margin-top: 15px;
+    margin-top: auto;
+    padding-top: 18px;
 }
 
 .item-actions a {
     flex: 1;
+    padding: 11px 6px;
+    border-radius: 7px;
     text-align: center;
-    padding: 10px;
     text-decoration: none;
-    border-radius: 6px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
 }
 
 .btn-claim {
@@ -1116,4 +1331,211 @@ tbody tr:hover {
 
 .btn-claim:hover {
     background: #15803d;
+}
+
+/* No Items */
+
+.no-items {
+    grid-column: 1 / -1;
+    padding: 55px 20px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px dashed #d1d5db;
+    border-radius: 10px;
+}
+
+.no-items h3 {
+    margin: 0 0 10px;
+    color: #374151;
+    font-size: 20px;
+}
+
+.no-items p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+    .main {
+        padding: 22px;
+    }
+
+    .items-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex: none;
+    }
+
+    .main {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 18px;
+    }
+
+    .browse-tools {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .small-search,
+    .small-filter {
+        width: 100%;
+    }
+
+    .small-filter select {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ==============================
+   CLAIM ITEM PAGE
+============================== */
+
+.claim-item-container {
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eaeaea;
+}
+
+.claim-item-container h3 {
+    font-size: 23px;
+    color: #222;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.claim-item-container p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+
+.claim-item-container p strong {
+    color: #333;
+    display: inline-block;
+    min-width: 105px;
+}
+
+.claim-item-container form {
+    margin-top: 25px;
+}
+
+.claim-item-container label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.claim-item-container textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 14px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.claim-item-container textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.claim-item-container textarea::placeholder {
+    color: #999;
+}
+
+.claim-item-container button {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 12px 22px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.claim-item-container button:hover {
+    background: #1d4ed8;
+}
+
+.claim-item-container a {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 11px 20px;
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    transition: 0.3s;
+}
+
+.claim-item-container a:hover {
+    background: #f3f4f6;
+    color: #222;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .claim-item-container {
+        margin: 20px 10px;
+        padding: 22px;
+    }
+
+    .claim-item-container h3 {
+        font-size: 20px;
+    }
+
+    .claim-item-container button,
+    .claim-item-container a {
+        margin-top: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .claim-item-container {
+        padding: 18px;
+    }
+
+    .claim-item-container button,
+    .claim-item-container a {
+        display: block;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+        margin-left: 0;
+    }
 }

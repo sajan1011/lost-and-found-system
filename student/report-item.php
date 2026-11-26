@@ -13,13 +13,9 @@ require "../includes/session-check.php";
 </head>
 
 <body>
-
-    <div class="layout">
-
+<div class="layout">
         <?php include "sidebar.php"; ?>
-
         <div class="main">
-
             <div class="topbar">
                 <h1 class="page-title" style="border:none; margin:0; padding:0;">Report an Item</h1>
             </div>
@@ -27,10 +23,8 @@ require "../includes/session-check.php";
             <?php
             if (isset($_SESSION['error'])) {
                 ?>
-                <p class="msg error">
-                    <?= $_SESSION['error'];
-                    unset($_SESSION['error']); ?>
-                </p>
+                <div class="alert alert-error">
+                    <?= htmlspecialchars($_SESSION['error']) ?>
                 <?php
             }
             ?>
